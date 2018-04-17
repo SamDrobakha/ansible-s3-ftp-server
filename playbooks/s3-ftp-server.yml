@@ -1,0 +1,9 @@
+- name: s3-ftp-server-configuration
+  # download s3fs, make and install it. Mount bucket and add to fstab
+  # then install and configure FTP service on box. user creation and FTPS inclued.
+  #Note: s3fs tool allows to mount AWS S3 bucket 
+  hosts: aws_personal
+  remote_user: ec2-user
+  roles:
+    - common
+    - s3-ftp-server

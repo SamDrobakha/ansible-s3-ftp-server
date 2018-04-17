@@ -1,0 +1,5 @@
+all:
+  children:
+    aws_personal:
+      hosts:
+        <your_host_name>
