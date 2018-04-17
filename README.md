@@ -1,10 +1,9 @@
 ﻿# ansible-s3-ftp
 
 DESCRIPTION: This soution builds reliable FTP service using Amazon S3 bucket as a storage. 
-
 Inspired by: https://cloudacademy.com/blog/s3-ftp-server/
-
-
+ 
+ 
 This manual assumes you have AWS account and EC2 instance.
 
 TO USE ansible role, ENSURE that:
