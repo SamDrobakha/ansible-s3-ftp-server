@@ -1,0 +1,13 @@
+# set variables here or add them to 'secrets.yml'
+
+# uncomment to set bucket name. Ignore dots ("."") in bucket names as it causes issues.
+#bucket_name: <your_bucket_name>
+
+# uncomment to set your EC2 instance elastic IP or any public facing IP with opened 22 port
+#elastic_IP: <your_IP>
+
+# uncomment to set hash value of your ftp user password
+# to get hash value, you may use following command: "openssl passwd -salt <salt> -1 <password>""
+#ftpuser1_password: <your_hashed_password>
+
+#- include: secrets.yml
