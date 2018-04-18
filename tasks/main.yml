@@ -1,2 +1,3 @@
-- include: install_mount_s3fs.yaml
+- include: install_mount_s3fs.yml
 - include: install_configure_vsftpd.yml
+- include: ftp_user_home-to-s3.yml

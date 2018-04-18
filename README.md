@@ -14,6 +14,7 @@ TO USE ansible role, ENSURE that:
 
 HOW TO USE:
 1. git clone to your local 'roles' folder
+(you may want to symlink (ln -s) checked out repo to your 'roles' folder)
 2. in roles/s3-ftp-server/vars/main.yml provide your bucket name, EIP and password hash values
 3. to use role in playbook, use '/examples/sample_playbook’ as an example
 
