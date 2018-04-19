@@ -7,7 +7,7 @@
 
 - name: vsftpd-configure 1 - create ceritificates folder
     # sudo mkdir -p /etc/ssl/private
-  shell: mkdir -p /etc/ssl/private |
+  shell: mkdir -p /etc/ssl/private
   args:
     creates: /etc/ssl/private
   become: yes
