@@ -7,7 +7,7 @@
 
 - name: vsftpd-configure 1 - create ceritificates folder
     # sudo mkdir -p /etc/ssl/private
-  shell: mkdir -p /etc/ssl/private || openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=cc/ST=Default/L=Default/O=Default/CN=carla.grtools.cc"
+  shell: mkdir -p /etc/ssl/private |
   args:
     creates: /etc/ssl/private
   become: yes
