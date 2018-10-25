@@ -11,6 +11,7 @@ TO USE ansible role, ENSURE that:
 2. EIP is assigned to EC2.
 3. Policy like AWS managed one "AmazonS3FullAccess" added to your ec2 instance.
 4. Allowed INBOUND traffic to 990/tcp, 15390:15690/tcp in EC2 secutiry group.
+(AWS CloudFormation template is in draft - $(me) going to add it here soon. As of now create cloud components yourself)
 
 HOW TO USE:
 1. git clone to your local 'roles' folder
