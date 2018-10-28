@@ -1,0 +1,9 @@
+[
+  { "ParameterKey": "InstanceType",     "ParameterValue": "" },
+  { "ParameterKey": "KeyName",          "ParameterValue": "" },
+  { "ParameterKey": "HostedZone",       "ParameterValue": "" },
+  { "ParameterKey": "ExistingS3bucket", "ParameterValue": "NONE" },
+  { "ParameterKey": "VpcId",            "ParameterValue": "" },
+  { "ParameterKey": "SubnetId",         "ParameterValue": "" },
+  { "ParameterKey": "SSHLocation",      "ParameterValue": "" }
+]
