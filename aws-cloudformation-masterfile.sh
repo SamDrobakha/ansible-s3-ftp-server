@@ -10,3 +10,10 @@ aws cloudformation create-stack \
 
 #this will delete stack
 aws cloudformation delete-stack --stack-name gSFTP-CLOUD
+
+#this will take params for ansible
+export S3_BUCKET_ID=$(aws cloudformation describe-stacks --stack-name gSFTP-CLOUD --output text | grep S3bucketID | awk {'print $3'})
+export PUBLIC_IP=$(aws cloudformation describe-stacks --stack-name gSFTP-CLOUD --output text | grep PublicIPAddress | awk {'print $3'})
+export SFTP_DNS=$(aws cloudformation describe-stacks --stack-name gSFTP-CLOUD --output text | grep DomainName | awk {'print $3'})
+
+

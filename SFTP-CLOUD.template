@@ -23,9 +23,7 @@
     "HostedZone" : {
       "Type" : "String",
       "Description" : "The DNS name of an existing Amazon Route 53 hosted zone",
-      "Default" : " ",
-      "AllowedPattern" : "(?!-)[a-zA-Z0-9-.]{1,63}(?<!-)",
-      "ConstraintDescription" : "must be a valid DNS zone name."
+      "Default" : " "
     },
 
     "ExistingS3bucket" : {
@@ -291,26 +289,17 @@
       }
   },
 
-
   "Outputs" : {
-
     "InstanceId" : {
-      "Description" : "InstanceId of the newly created EC2 instance",
       "Value" : { "Ref" : "sftpEC2Instance" }
     },
-
     "PublicIPAddress" : {
-      "Description" : "Public IP address of the newly created EC2 instance",
       "Value" : { "Fn::GetAtt" : [ "sftpEC2Instance", "PublicIp" ] }
     },
-
     "DomainName" : {
-      "Description" : "SFTP fully qualified domain name",
       "Value" : { "Ref" : "DNSRecord" }
     },
-
     "S3bucketID" : {
-      "Description" : "Name of used S3 bucket. NOTE: If you will DELETE stack - cludformation will delete only empty bucket, make sure you removed data from it otherwise delete bucket yourself.",
       "Value" : {
         "Fn::If" : [
           "CreateNewS3bucket",

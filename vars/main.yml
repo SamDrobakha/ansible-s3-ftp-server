@@ -2,12 +2,15 @@
 
 # uncomment to set bucket name. Ignore dots (".") in bucket names as it causes issues.
 #bucket_name: <your_bucket_name>
+bucket_name: "{{ lookup('env', 'S3_BUCKET_ID') }}"
 
 # uncomment to set your EC2 instance elastic IP
 #elastic_IP: <your_IP>
+elastic_IP: "{{ lookup('env', 'PUBLIC_IP') }}"
 
 # uncomment to set hash value of your ftp user password
 # to get hash value, you may use following command: "openssl passwd -salt <salt> -1 <password>""
 #ftpuser1_password: <your_hashed_password>
+ftpuser1_password: $1$1$vzNly/fN.0ulo8sCL1n6e/
 
 #- include: secrets.yml
