@@ -18,7 +18,7 @@
     openssl req -x509 -nodes -days 730 -newkey rsa:2048 
     -keyout /etc/ssl/private/vsftpd.pem 
     -out /etc/ssl/private/vsftpd.pem 
-    -subj "/C=cc/ST=Default/L=Default/O=Default/CN=carla.grtools.cc"
+    -subj "/C=cc/ST=Default/L=Default/O=Default/CN={{ SFTP_DNS }}"
   args:
     creates: /etc/ssl/private/vsftpd.pem
   become: yes
