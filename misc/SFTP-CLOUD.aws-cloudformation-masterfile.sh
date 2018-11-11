@@ -3,30 +3,28 @@
 #usage: 
 # --create_sftp  to create things
 # --remove_sftp  to remove things
+# -h             to show help
+
 
 #parameters:
-#stack name
-sftp_stack_name=gSFTP-CLOUD
-#set pass for user <ftpuser1> here
-sftp_pass=ftppass1
-what_we_do=$1
-ansible_home=$ANSIBLE_HOME
+#moved down temp
 
-programname=$0
+
 usage() 
 {
-    echo "usage: $programname [--create-sftp --remove-sftp or --list-sftp/-h]"
-    echo "  --create-sftp     Create AWS SFTP infrastructure and install vsftpd using ansible"
-    echo "  --remove-sftp     Remove AWS SFTP infrastructure"
-    echo "  --list-sftp       Describe AWS SFTP resources (stack)"
-    echo "  -h      display help"
+    echo "usage: $programname [--create-sftp --remove-sftp --list-sftp -h]"
+    echo ""
+    echo "  --create-sftp   Create AWS SFTP infrastructure and install vsftpd using ansible"
+    echo "  --remove-sftp   Remove AWS SFTP infrastructure"
+    echo "  --list-sftp     Describe AWS SFTP resources (stack)"
+    echo "  -h              Show this message"
     exit 1
 }
 
 
 #CREATE
 #1. this will create stack (similar command to update stack, see man)
-stack_creation()
+stack_creation() 
 {
 	aws cloudformation create-stack \
 	--stack-name $sftp_stack_name \
@@ -38,7 +36,7 @@ stack_creation()
 
 
 #2. this will get stack status
-stack_progress()
+stack_progress() 
 {
 	stack_operations_inprogress=true
 
@@ -56,7 +54,7 @@ stack_progress()
 				stack_operations_inprogress=true
 				sleep 4
 			else 
-				echo "Error: stack operations error or stack does not exist - exiting" 
+				echo "Error: stack operations error or stack does not exist - exiting"
 				break
 			fi
 		fi
@@ -64,80 +62,91 @@ stack_progress()
 }
 
 
-aws_cf_variables_to_ansible()
+aws_cf_variables_to_ansible() 
 {
-	#this will take params for ansible
-	export SFTP_S3_BUCKET_ID=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep S3bucketID | awk {'print $3'})
-	export SFTP_PUBLIC_IP=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep PublicIPAddress | awk {'print $3'})
-	export SFTP_DNS=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep DomainName | awk {'print $3'})
+		#___________________________________________________
+		#this will take params for ansible
+		SFTP_S3_BUCKET_ID=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep S3bucketID | awk {'print $3'})
+		SFTP_PUBLIC_IP=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep PublicIPAddress | awk {'print $3'})
+		SFTP_DNS=$(aws cloudformation describe-stacks --stack-name $sftp_stack_name --output text | grep DomainName | awk {'print $3'})
+		echo "bucket_name: $SFTP_S3_BUCKET_ID" >> vars/main.yml
+		echo "elastic_IP: $SFTP_PUBLIC_IP" >> vars/main.yml
+		echo "SFTP_DNS: $SFTP_DNS" >> vars/main.yml
 
-	#this will update known_hosts
-	ssh-keyscan $SFTP_DNS >> ~/.ssh/known_hosts
-	ssh-keyscan $SFTP_PUBLIC_IP >> ~/.ssh/known_hosts
+		#this will update known_hosts
+#		ssh-keyscan $SFTP_DNS >> ~/.ssh/known_hosts
+#		ssh-keyscan $SFTP_PUBLIC_IP >> ~/.ssh/known_hosts
 
-	#this will generate password for SFtP user <ftpuser1>
-	#usage: openssl passwd -salt <salt> -1 <password>
-	export SFTP_PASS_HASH=$(openssl passwd -salt 990 -1 $sftp_pass)
+		#this will generate password for SFTP user <ftpuser1>
+		#usage: openssl passwd -salt <salt> -1 <password>
+		SFTP_PASS_HASH=$(openssl passwd -salt 990 -1 $sftp_pass)
+		echo "ftpuser1_password: $SFTP_PASS_HASH" >> vars/main.yml
+		#___________________________________________________
 }
 
 
 #LIST
-list_sftp_stack()
+list_sftp_stack() 
 {
-	aws cloudformation describe-stacks --stack-name ${sftp_stack_name}
+	aws cloudformation describe-stacks --stack-name ${sftp_stack_name} --output text 
 }
 
 
 #DELETE
 #1. remove bucket 
-s3_force_removal()
+s3_force_removal() 
 {
-	aws s3 rb --force s3://${SFTP_S3_BUCKET_ID}
+	aws s3 rb --force s3://$(grep bucket_name vars/main.yml | awk {'print $2'})
 }
 
 
 #2. clean known_hosts
 #this helps when IP of ansible target server changes
-sys_variables_cleanup()
+sys_variables_cleanup() 
 {
 	echo "remove sftp fqdn ($fqdn) and sftp ip ($ip) from known hosts"
+	SFTP_DNS=$(grep SFTP_DNS vars/main.yml | awk {'print $2'})
+	SFTP_PUBLIC_IP=$(grep elastic_IP vars/main.yml | awk {'print $2'})
 	sed -i '/^'$SFTP_DNS'/d' ~/.ssh/known_hosts
 	sed -i '/^'$SFTP_PUBLIC_IP'/d' ~/.ssh/known_hosts
-	#this will remove variables from 'env'
-	unset SFTP_S3_BUCKET_ID PUBLIC_IP SFTP_DNS SFTP_PASS_HASH
+	rm -rf vars/main.yml
 }
 
 
 #3. delete stack
-delete_sftp_stack()
+delete_sftp_stack() 
 {
 	aws cloudformation delete-stack --stack-name $sftp_stack_name
 }
 
-main()
-{
-	if [ $what_we_do == '--create-sftp' ]
-	then 
+
+#stack name
+sftp_stack_name=gSFTP-CLOUD
+#set pass for user <ftpuser1> here
+sftp_pass=ftppass1
+ansible_home=$ANSIBLE_HOME
+what_we_do=$1
+programname=$0
+
+
+main_test() {
+	if [[ $what_we_do == "-h" ]]; then
+		usage
+	elif [[ $what_we_do == '--list-sftp' ]]; then
+		list_sftp_stack
+	elif [[ $what_we_do == '--remove-sftp' ]]; then
+#		s3_force_removal
+		sys_variables_cleanup
+#		delete_sftp_stack
+#		stack_progress
+	elif [[ $what_we_do == '--create-sftp' ]]; then
 		stack_creation
 		stack_progress
 		aws_cf_variables_to_ansible
-		ansible-playbook -i hosts playbooks/s3-ftp-server.yml
-	
-	elif [ $what_we_do == '--remove-sftp' ]
-	then
-		s3_force_removal
-		sys_variables_cleanup
-		delete_sftp_stack
-		stack_progress
-	elif [$what_we_do == '--list-sftp' ]
-	then
-		list_sftp_stack
-	elif [ $what_we_do == '-h' ]
-	then
-		usage
+		ansible-playbook -i ${ansible_home}/hosts ${ansible_home}/playbooks/s3-ftp-server.yml
 	else
 		usage
+	fi
 }
 
-
-main
+main_test
