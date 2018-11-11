@@ -40,16 +40,16 @@
   become: yes
 
 - name: vsftpd-user-creation 1 - create user
-    # sudo useradd -d /mnt/$bucket_name -s /sbin/nologin ftpuser1
-    # sudo passwd ftpuser1
+    # sudo useradd -d /mnt/$bucket_name -s /sbin/nologin ftpuser
+    # sudo passwd ftpuser
   user:
-    name: ftpuser1
-    password: "{{ ftpuser1_password }}"
+    name: "{{ ftpuser_name }}"
+    password: "{{ ftpuser_password }}"
     state: present
     shell: /sbin/nologin
     system: no
     create_home: yes
-    home: /home/ftpuser1
+    home: "/home/{{ ftpuser_name }}"
   become: yes
 
 - name: vsftpd-user-creation 2 - add user to ftp userlist

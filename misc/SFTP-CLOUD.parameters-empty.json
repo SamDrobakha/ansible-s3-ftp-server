@@ -5,5 +5,8 @@
   { "ParameterKey": "ExistingS3bucket", "ParameterValue": "NONE" },
   { "ParameterKey": "VpcId",            "ParameterValue": "" },
   { "ParameterKey": "SubnetId",         "ParameterValue": "" },
-  { "ParameterKey": "SSHLocation",      "ParameterValue": "" }
+  { "ParameterKey": "SSHLocation",      "ParameterValue": "" },
+  { "ParameterKey": "sftp_user_name",   "ParameterValue": "" },
+  { "ParameterKey": "sftp_user_pass",   "ParameterValue": "" },
+  { "ParameterKey": "new_stack_name",   "ParameterValue": "" }
 ]

@@ -1,18 +1,13 @@
 ﻿# ansible-s3-ftp
 
-DESCRIPTION: This soution builds reliable SFTP service using Amazon S3 bucket as a storage. 
+## DESCRIPTION: This soution builds reliable SFTP service using Amazon S3 bucket as a storage. 
 Inspired by: https://cloudacademy.com/blog/s3-ftp-server/
- 
- 
+  
 This manual assumes you have AWS account and configured AWS CLI.
 
 
-TO USE ansible role, build AWS resources using CloudFormation template:
-1. indicate your AWS parameters in [SFTP-CLOUD.parameters.json]
-2. run 'aws cloudformation create-stack' - see full command in [aws-cloudformation-masterfile.sh]
+## CREATES REQUIRED AWS RESOURCES ACCORDING TO SEPARATE TEMPLATE:
 
-
-It will create following resources:
 * AWS EC2 instance and keys pair.
 * Public IP address assigned to EC2.
 * Allowed INBOUND traffic to 990/tcp, 15390:15690/tcp in new EC2 secutiry group.
@@ -21,17 +16,20 @@ It will create following resources:
 * DNS entry for your hosted zone (template assumes that you have it).
 
 
-HOW TO USE:
-1. git clone to your local 'roles' folder
-(you may want to symlink (ln -s) checked out repo to your 'roles' folder)
-2. in roles/s3-ftp-server/vars/main.yml provide your bucket name, EIP and password hash values
-3. to use role in playbook, use '/examples/sample_playbook’ as an example
 
-NOTE:
-The role was not designed as reusable. It didn’t fail after second run but re-usability was not tested.
+## HOW TO USE:
+
+1. git clone this repository to your ansible master machine
+2. symlink it to your $ANSIBLE_HOME/roles directory
+    ^ make sure $ANSIBLE_HOME is set
+3. set your variables in misc/SFTP-CLOUD.parameters.json
+4. symlink roles/s3-ftp-server/examples/s3-ftp-server.yml to $ANSIBLE_HOME/roles 
+5. run misc/SFTP-CLOUD.aws-cloudformation-masterfile.sh –create-sftp from role directory (see script usage)
 
 
-REFERENCES:
+
+
+## REFERENCES:
 
 1. https://cloudacademy.com/blog/s3-ftp-server/ 
 2. https://github.com/s3fs-fuse/s3fs-fuse 

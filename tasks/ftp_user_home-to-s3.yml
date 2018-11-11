@@ -8,5 +8,5 @@
   become: yes
 
 - name: Change ftp user home directory to mounted S3 bucket 
-  shell: "usermod -d /mnt/{{ bucket_name }}/FTP_DATA ftpuser1"
+  shell: "usermod -d /mnt/{{ bucket_name }}/FTP_DATA {{ ftpuser_name }}"
   become: yes
