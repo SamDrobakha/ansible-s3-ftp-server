@@ -7,9 +7,9 @@
 
 - name: vsftpd-configure 1 - create ceritificates folder
     # sudo mkdir -p /etc/ssl/private
-  shell: mkdir -p /etc/ssl/private
-  args:
-    creates: /etc/ssl/private
+  file:
+    path: /etc/ssl/private
+    state: directory
   become: yes
 
 - name: vsftpd-configure 2 - create ceritificate
@@ -56,7 +56,7 @@
     # sudo vi /etc/vsftpd.userlist
   copy:
     src: vsftpd.userlist
-    dest: /etc/vsftpd.userlist
+    dest: /etc/vsftpd/vsftpd.userlist
     backup: yes
   become: yes
   notify: "restart vsftpd"

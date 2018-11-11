@@ -8,7 +8,7 @@ bucket_name: "{{ lookup('env', 'SFTP_S3_BUCKET_ID') }}"
 
 # uncomment to set your EC2 instance elastic IP
 #elastic_IP: <your_IP>
-elastic_IP: "{{ lookup('env', 'PUBLIC_IP') }}"
+elastic_IP: "{{ lookup('env', 'SFTP_PUBLIC_IP') }}"
 
 # uncomment to set your EC2 instance FQDN
 #SFTP_hostname:  <your_DNS>

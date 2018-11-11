@@ -6,9 +6,10 @@
     become: yes
 
   - name: s3-fuse-install-2 - create temp folder for git repo
-    shell: mkdir /tmp/misc
-    args:
-      creates: /tmp/misc/
+    # mkdir /tmp/misc
+    file:
+      path: /tmp/misc
+      state: directory
 
   - name: s3-fuse-install-3 - download s3fs from github
     # git clone https://github.com/s3fs-fuse/s3fs-fuse.git
@@ -31,9 +32,9 @@
 
   - name: s3-mount-1 - mkdir mountpoint directory
     # sudo mkdir -p /mnt/$bucket_name
-    shell: "mkdir /mnt/{{ bucket_name }}"
-    args:
-      creates: "/mnt/{{ bucket_name }}"
+    file:
+      path: /mnt/{{ bucket_name }}
+      state: directory
     become: yes
 
   - name: s3-mount-2 - update fuse filesystem config

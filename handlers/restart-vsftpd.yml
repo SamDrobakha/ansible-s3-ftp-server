@@ -3,6 +3,7 @@
     # sudo systemctl enable vsftpd
     listen: "restart vsftpd"
     service:
-      name: vsftpd.service
+      name: vsftpd
       state: reloaded
-    enabled: yes
+      enabled: yes
+    become: yes

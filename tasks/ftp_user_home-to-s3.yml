@@ -1,3 +1,12 @@
+- name: Create directory FTP_DATA in S3 bucket
+  #mkdir
+  #task added to overcome issue "500 OOPS: unrecognised variable in config file: allow_writeable_chroot"
+  file:
+    path: /mnt/{{ bucket_name }}/FTP_DATA
+    state: directory
+    mode: 0766
+  become: yes
+
 - name: Change ftp user home directory to mounted S3 bucket 
-  shell: "usermod -d /mnt/{{ bucket_name }} ftpuser1"
+  shell: "usermod -d /mnt/{{ bucket_name }}/FTP_DATA ftpuser1"
   become: yes
