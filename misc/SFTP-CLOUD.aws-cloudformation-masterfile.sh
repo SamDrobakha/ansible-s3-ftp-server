@@ -1,10 +1,11 @@
 #!/bin/bash
 #masterfile for SFTP manipulation - controls AWS resources creation, SFTP configuration
 #usage: 
-# --create_sftp  Create AWS SFTP infrastructure and install vsftpd using ansible
-# --remove_sftp  Remove AWS SFTP infrastructure
-# --list-sftp    Describe AWS SFTP resources (stack)
-# -h             Show help
+# --create_sftp        Create AWS SFTP infrastructure and install vsftpd using ansible
+# --remove_sftp        Remove AWS SFTP infrastructure
+# --list-sftp          Describe AWS SFTP resources (stack)
+#--create-only-stack   Create AWS SFTP infrastructure (stack) only"
+# -h                   Show help
 
 
 #set stack name in misc/SFTP-CLOUD.parameters.json
@@ -13,7 +14,7 @@ sftp_stack_name=$(grep newStackName misc/SFTP-CLOUD.parameters.json | awk {'prin
 sftp_user=$(grep sftpUserName misc/SFTP-CLOUD.parameters.json | awk {'print $5'} | sed 's/"//g')
 sftp_pass=$(grep sftpUserPass misc/SFTP-CLOUD.parameters.json | awk {'print $5'} | sed 's/"//g')
 
-#SET ANSIBLE HOME HERE - IT MAKES LIFE EASIER
+#SET ANSIBLE HOME HERE - it is required for ansible correct run
 ansible_home=$ANSIBLE_HOME
 what_we_do=$1
 programname=$0
@@ -23,10 +24,11 @@ usage()
 {
     echo "usage: $programname [--create-sftp --remove-sftp --list-sftp -h]"
     echo ""
-    echo "  --create-sftp   Create AWS SFTP infrastructure and install vsftpd using ansible"
-    echo "  --remove-sftp   Remove AWS SFTP infrastructure"
-    echo "  --list-sftp     Describe AWS SFTP resources (stack)"
-    echo "  -h              Show this message"
+    echo "  --create-sftp         Create AWS SFTP infrastructure and install vsftpd using ansible"
+    echo "  --remove-sftp         Remove AWS SFTP infrastructure"
+    echo "  --list-sftp           Describe AWS SFTP resources (stack)"
+    echo "  --create-only-stack   Create AWS SFTP infrastructure (stack) only"
+    echo "  -h                    Show this message"
     exit 1
 }
 
@@ -148,6 +150,9 @@ main()
 		s3_force_removal
 		sys_variables_cleanup
 		delete_sftp_stack
+		stack_progress
+	elif [[ $what_we_do == '--create-only-stack' ]]; then
+		stack_creation
 		stack_progress
 	elif [[ $what_we_do == '--create-sftp' ]]; then
 		stack_creation
