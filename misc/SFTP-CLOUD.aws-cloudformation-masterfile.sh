@@ -14,7 +14,7 @@ sftp_stack_name=$(grep newStackName misc/SFTP-CLOUD.parameters.json | awk {'prin
 sftp_user=$(grep sftpUserName misc/SFTP-CLOUD.parameters.json | awk {'print $5'} | sed 's/"//g')
 sftp_pass=$(grep sftpUserPass misc/SFTP-CLOUD.parameters.json | awk {'print $5'} | sed 's/"//g')
 
-#SET ANSIBLE HOME HERE - it is required for ansible correct run
+#SET ANSIBLE HOME HERE - it is usually required for ansible correct run
 ansible_home=$ANSIBLE_HOME
 what_we_do=$1
 programname=$0
