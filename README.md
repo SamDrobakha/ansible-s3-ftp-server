@@ -38,3 +38,4 @@ This manual assumes you have AWS account and configured AWS CLI.
 5. https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html#cli-aws-cloudformation 
 6. https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04 
 7. https://stackoverflow.com/questions/7052875/setting-up-ftp-on-amazon-cloud-server 
+
