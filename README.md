@@ -1,4 +1,4 @@
-﻿# ansible-s3-ftp
+﻿# ansible-s3-ftp-server
 
 ## DESCRIPTION: This soution builds reliable SFTP service using Amazon S3 bucket as a storage. 
 Inspired by: https://cloudacademy.com/blog/s3-ftp-server/
